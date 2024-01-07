@@ -1,5 +1,7 @@
 name: Update Qt patches
-on: pull_request
+on:
+  pull_request:
+  workflow_dispatch:
 jobs:
   update-qt-patches:
     runs-on: ubuntu-latest
