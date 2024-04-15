@@ -5,6 +5,7 @@ sdk: org.freedesktop.Sdk
 command: materialgram
 rename-icon: materialgram
 finish-args:
+  - --filesystem=host
   - --share=ipc
   - --share=network
   - --socket=wayland
