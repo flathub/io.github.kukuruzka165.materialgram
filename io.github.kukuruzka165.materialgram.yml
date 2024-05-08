@@ -74,40 +74,20 @@ modules:
     cleanup:
       - '*'
 
-  - name: xcursorgen
-    sources:
-      - type: archive
-        url: https://xorg.freedesktop.org/archive/individual/app/xcursorgen-1.0.8.tar.gz
-        sha256: b8bb2756918343b8bc15a4ce875e9efb6c4e7777adba088280e53dd09753b6ac
-        x-checker-data:
-          type: anitya
-          project-id: 21210
-          url-template: https://xorg.freedesktop.org/archive/individual/app/xcursorgen-$version.tar.gz
-    cleanup:
-      - '*'
-
-  - name: dmz-cursor-theme
-    buildsystem: simple
-    build-commands:
-      - (cd DMZ-Black/pngs ; ./make.sh)
-      - install -d "$FLATPAK_DEST/share/icons/default/cursors"
-      - cp -a DMZ-Black/xcursors/* "$FLATPAK_DEST/share/icons/default/cursors"
-      - install -Dm644 DMZ-Black/index.theme "$FLATPAK_DEST/share/icons/default/index.theme"
-    sources:
-      - type: archive
-        url: http://ftp.de.debian.org/debian/pool/main/d/dmz-cursor-theme/dmz-cursor-theme_0.4.5.tar.xz
-        sha256: b719a64ed9c51905743105e5a50b15492695929ab2d6fca2cea760d52ccd1f5c
-        x-checker-data:
-          type: anitya
-          project-id: 15904
-          url-template: http://ftp.de.debian.org/debian/pool/main/d/dmz-cursor-theme/dmz-cursor-theme_$version.tar.xz
-
   - name: jinja2
     buildsystem: simple
     build-commands:
       - pip3 install --exists-action=i --no-index --find-links="file://${PWD}" --prefix=${FLATPAK_DEST}
+        flit-core --no-build-isolation
+      - pip3 install --exists-action=i --no-index --find-links="file://${PWD}" --prefix=${FLATPAK_DEST}
         "Jinja2" --no-build-isolation
     sources:
+      - type: file
+        url: https://files.pythonhosted.org/packages/c4/e6/c1ac50fe3eebb38a155155711e6e864e254ce4b6e17fe2429b4c4d5b9e80/flit_core-3.9.0.tar.gz
+        sha256: 72ad266176c4a3fcfab5f2930d76896059851240570ce9a98733b658cb786eba
+        x-checker-data:
+          type: pypi
+          name: flit-core
       - type: file
         url: https://files.pythonhosted.org/packages/87/5b/aae44c6655f3801e81aa3eef09dbbf012431987ba564d7231722f68df02d/MarkupSafe-2.1.5.tar.gz
         sha256: d283d37a890ba4c1ae73ffadf8046435c76e7bc2247bbb63c00bd1a709c6544b
@@ -165,25 +145,6 @@ modules:
           project-id: 6845
           stable-only: true
           url-template: https://boostorg.jfrog.io/artifactory/main/release/$version/source/boost_${major}_${minor}_${patch}.tar.bz2
-
-  - name: fmt
-    buildsystem: cmake-ninja
-    builddir: true
-    config-opts:
-      - -DCMAKE_BUILD_TYPE=None
-      - -DFMT_DOC=OFF
-      - -DFMT_TEST=OFF
-    sources:
-      - type: archive
-        url: https://github.com/fmtlib/fmt/releases/download/10.2.1/fmt-10.2.1.zip
-        sha256: 312151a2d13c8327f5c9c586ac6cf7cddc1658e8f53edae0ec56509c8fa516c9
-        x-checker-data:
-          type: json
-          url: https://api.github.com/repos/fmtlib/fmt/releases/latest
-          tag-query: .tag_name
-          timestamp-query: .published_at
-          version-query: $tag
-          url-query: '"https://github.com/fmtlib/fmt/releases/download/\($tag)/fmt-\($version).zip"'
 
   - name: protobuf
     buildsystem: cmake-ninja
@@ -398,7 +359,6 @@ modules:
     builddir: true
     config-opts:
       - -DCMAKE_BUILD_TYPE=None
-      - -DINPUT_egl_extension_platform_wayland=no
     sources:
       - type: archive
         url: https://download.qt.io/archive/qt/6.7/6.7.0/submodules/qtwayland-everywhere-src-6.7.0.tar.xz
