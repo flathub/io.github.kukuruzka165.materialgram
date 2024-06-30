@@ -407,7 +407,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/desktop-app/tg_owt.git
-        commit: 3bb3d757681e6cc5135aec6529a753dc3dcdcfb9
+        commit: c9cc4390ab951f2cbc103ff783a11f398b27660b
         x-checker-data:
           type: json
           parent-id: materialgram-git-0
@@ -442,8 +442,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/kukuruzka165/materialgram.git
-        commit: 9aa51761eb67854c9236dddfdaffc8e92a2de93b
-        tag: v5.1.7.1
+        commit: a86e6cb323c55b58e868dfa33b041745837edfdd
+        tag: v5.2.0.1
         x-checker-data:
           type: json
           url: https://api.github.com/repos/kukuruzka165/materialgram/releases
