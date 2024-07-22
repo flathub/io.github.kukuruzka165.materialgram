@@ -215,8 +215,8 @@ modules:
       - -DAVIF_CODEC_DAV1D=ON
     sources:
       - type: archive
-        url: https://github.com/AOMediaCodec/libavif/archive/v1.0.4/libavif-1.0.4.tar.gz
-        sha256: dc56708c83a4b934a8af2b78f67f866ba2fb568605c7cf94312acf51ee57d146
+        url: https://github.com/AOMediaCodec/libavif/archive/v1.1.0/libavif-1.1.0.tar.gz
+        sha256: edb31951005d7a143be1724f24825809599a4832073add50eaf987733defb5c8
         x-checker-data:
           type: json
           url: https://api.github.com/repos/AOMediaCodec/libavif/releases/latest
@@ -237,8 +237,8 @@ modules:
       - -DWITH_EXAMPLES=OFF
     sources:
       - type: archive
-        url: https://github.com/strukturag/libheif/archive/v1.18.0/libheif-1.18.0.tar.gz
-        sha256: 847d4e2bb7153ae00965c9e6a0f184420c90879d84632424e478c411224c9817
+        url: https://github.com/strukturag/libheif/archive/v1.18.1/libheif-1.18.1.tar.gz
+        sha256: 73bc94442038d44d56fe730f72516ae53134eb15b878a7ad89ef60fac93a3318
         x-checker-data:
           type: json
           url: https://api.github.com/repos/strukturag/libheif/releases/latest
