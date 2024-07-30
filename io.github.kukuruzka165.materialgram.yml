@@ -212,7 +212,8 @@ modules:
     builddir: true
     config-opts:
       - -DCMAKE_BUILD_TYPE=None
-      - -DAVIF_CODEC_DAV1D=ON
+      - -DAVIF_CODEC_DAV1D=SYSTEM
+      - -DAVIF_LIBYUV=OFF
     sources:
       - type: archive
         url: https://github.com/AOMediaCodec/libavif/archive/v1.1.1/libavif-1.1.1.tar.gz
