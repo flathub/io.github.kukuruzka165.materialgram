@@ -461,8 +461,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/kukuruzka165/materialgram.git
-        commit: 86a57a7a24759dd04a8f86f15a3ca11cff487a2e
-        tag: v5.4.1.1
+        commit: 98c46abe6eb4c033b63a39fab4c932b94c38133b
+        tag: v5.5.4.1
         x-checker-data:
           type: json
           url: https://api.github.com/repos/kukuruzka165/materialgram/releases
