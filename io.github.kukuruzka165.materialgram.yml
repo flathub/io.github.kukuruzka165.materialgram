@@ -174,8 +174,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/protocolbuffers/protobuf.git
-        commit: 10ef3f77683f77fb3c059bf47725c27b3ff41e63
-        tag: v28.1
+        commit: 9fff46d7327c699ef970769d5c9fd0e44df08fc7
+        tag: v28.2
         x-checker-data:
           type: json
           url: https://api.github.com/repos/protocolbuffers/protobuf/releases/latest
@@ -285,8 +285,8 @@ modules:
       - -DJPEGXL_ENABLE_SKCMS=OFF
     sources:
       - type: archive
-        url: https://github.com/libjxl/libjxl/archive/v0.10.3/libjxl-0.10.3.tar.gz
-        sha256: e0191411cfcd927eebe5392d030fe4283fe27ba1685ab7265104936e0b4283a6
+        url: https://github.com/libjxl/libjxl/archive/v0.11.0/libjxl-0.11.0.tar.gz
+        sha256: 7ce4ec8bb37a435a73ac18c4c9ff56c2dc6c98892bf3f53a328e3eca42efb9cf
         x-checker-data:
           type: json
           url: https://api.github.com/repos/libjxl/libjxl/releases/latest
@@ -295,8 +295,8 @@ modules:
           version-query: $tag | sub("^[vV]"; "")
           url-query: '"https://github.com/libjxl/libjxl/archive/\($tag)/libjxl-\($version).tar.gz"'
       - type: archive
-        url: https://github.com/libjpeg-turbo/libjpeg-turbo/archive/3.0.3/libjpeg-turbo-3.0.3.tar.gz
-        sha256: a649205a90e39a548863a3614a9576a3fb4465f8e8e66d54999f127957c25b21
+        url: https://github.com/libjpeg-turbo/libjpeg-turbo/archive/3.0.4/libjpeg-turbo-3.0.4.tar.gz
+        sha256: 0270f9496ad6d69e743f1e7b9e3e9398f5b4d606b6a47744df4b73df50f62e38
         strip-components: 0
         x-checker-data:
           type: json
