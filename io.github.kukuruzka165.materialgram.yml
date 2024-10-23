@@ -16,7 +16,6 @@ finish-args:
   - --talk-name=com.canonical.AppMenu.Registrar
   - --talk-name=com.canonical.indicator.application
   - --talk-name=org.ayatana.indicator.application
-  - --filesystem=xdg-run/pipewire-0
   - --filesystem=home:ro
   - --unset-env=QT_PLUGIN_PATH
   - --env=PATH=/app/lib/webview/bin:/app/bin:/usr/bin
@@ -469,4 +468,3 @@ modules:
           tag-query: first | .tag_name
           timestamp-query: first | .published_at
           version-query: $tag | sub("^[vV]"; "")
-      - tdesktop.json
