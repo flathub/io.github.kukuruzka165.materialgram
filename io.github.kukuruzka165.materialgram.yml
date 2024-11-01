@@ -81,14 +81,14 @@ modules:
         "Jinja2" --no-build-isolation
     sources:
       - type: file
-        url: https://files.pythonhosted.org/packages/c4/e6/c1ac50fe3eebb38a155155711e6e864e254ce4b6e17fe2429b4c4d5b9e80/flit_core-3.9.0.tar.gz
-        sha256: 72ad266176c4a3fcfab5f2930d76896059851240570ce9a98733b658cb786eba
+        url: https://files.pythonhosted.org/packages/52/92/89cceb9c49f3e6c72091304636c5ebc2fc48c546742bbf8a6a474e48e666/flit_core-3.10.0.tar.gz
+        sha256: 6d904233178b3c924f665947ac7d286f2ac799fb69087e39e56ceb4084724a97
         x-checker-data:
           type: pypi
           name: flit-core
       - type: file
-        url: https://files.pythonhosted.org/packages/87/5b/aae44c6655f3801e81aa3eef09dbbf012431987ba564d7231722f68df02d/MarkupSafe-2.1.5.tar.gz
-        sha256: d283d37a890ba4c1ae73ffadf8046435c76e7bc2247bbb63c00bd1a709c6544b
+        url: https://files.pythonhosted.org/packages/b2/97/5d42485e71dfc078108a86d6de8fa46db44a1a9295e89c5d6d4a06e23a62/markupsafe-3.0.2.tar.gz
+        sha256: ee55d3edf80167e48ea11a923c7386f4669df67d7994554387f84e7d8b0a2bf0
         x-checker-data:
           type: pypi
           name: MarkupSafe
@@ -114,8 +114,8 @@ modules:
       - install -D systemd-detect-virt "$FLATPAK_DEST/bin"
     sources:
       - type: archive
-        url: https://github.com/systemd/systemd/archive/v256.6/systemd-256.6.tar.gz
-        sha256: c085f162dec001407dd32f00abbf20b7e6ed7043dcfaf8ed954787d86707f409
+        url: https://github.com/systemd/systemd/archive/v256.7/systemd-256.7.tar.gz
+        sha256: 896d76ff65c88f5fd9e42f90d152b0579049158a163431dd77cdc57748b1d7b0
         x-checker-data:
           type: json
           url: https://api.github.com/repos/systemd/systemd/releases/latest
@@ -174,8 +174,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/protocolbuffers/protobuf.git
-        commit: 10ef3f77683f77fb3c059bf47725c27b3ff41e63
-        tag: v28.1
+        commit: 5fda5abda3dee5f7a102c85860594bff8d8610bd
+        tag: v28.3
         x-checker-data:
           type: json
           url: https://api.github.com/repos/protocolbuffers/protobuf/releases/latest
@@ -256,8 +256,8 @@ modules:
       - -DWITH_EXAMPLES=OFF
     sources:
       - type: archive
-        url: https://github.com/strukturag/libheif/archive/v1.18.2/libheif-1.18.2.tar.gz
-        sha256: c2bf75ff61250fcdcb831f0d5d9d06808205d9ee3dd0749ef7a7c6f85dd30dc9
+        url: https://github.com/strukturag/libheif/archive/v1.19.1/libheif-1.19.1.tar.gz
+        sha256: 21510a709ab7eba6435cdb47e42eb54409319231ac9620c8997fe001dc5bee09
         x-checker-data:
           type: json
           url: https://api.github.com/repos/strukturag/libheif/releases/latest
@@ -285,8 +285,8 @@ modules:
       - -DJPEGXL_ENABLE_SKCMS=OFF
     sources:
       - type: archive
-        url: https://github.com/libjxl/libjxl/archive/v0.10.3/libjxl-0.10.3.tar.gz
-        sha256: e0191411cfcd927eebe5392d030fe4283fe27ba1685ab7265104936e0b4283a6
+        url: https://github.com/libjxl/libjxl/archive/v0.11.0/libjxl-0.11.0.tar.gz
+        sha256: 7ce4ec8bb37a435a73ac18c4c9ff56c2dc6c98892bf3f53a328e3eca42efb9cf
         x-checker-data:
           type: json
           url: https://api.github.com/repos/libjxl/libjxl/releases/latest
@@ -295,8 +295,8 @@ modules:
           version-query: $tag | sub("^[vV]"; "")
           url-query: '"https://github.com/libjxl/libjxl/archive/\($tag)/libjxl-\($version).tar.gz"'
       - type: archive
-        url: https://github.com/libjpeg-turbo/libjpeg-turbo/archive/3.0.3/libjpeg-turbo-3.0.3.tar.gz
-        sha256: a649205a90e39a548863a3614a9576a3fb4465f8e8e66d54999f127957c25b21
+        url: https://github.com/libjpeg-turbo/libjpeg-turbo/archive/3.0.4/libjpeg-turbo-3.0.4.tar.gz
+        sha256: 0270f9496ad6d69e743f1e7b9e3e9398f5b4d606b6a47744df4b73df50f62e38
         strip-components: 0
         x-checker-data:
           type: json
@@ -331,8 +331,8 @@ modules:
       - -DINPUT_openssl=linked
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtbase-everywhere-src-6.7.2.tar.xz
-        sha256: c5f22a5e10fb162895ded7de0963328e7307611c688487b5d152c9ee64767599
+        url: https://download.qt.io/archive/qt/6.8/6.8.0/submodules/qtbase-everywhere-src-6.8.0.tar.xz
+        sha256: 1bad481710aa27f872de6c9f72651f89a6107f0077003d0ebfcc9fd15cba3c75
         x-checker-data:
           type: anitya
           project-id: 7927
@@ -348,8 +348,8 @@ modules:
       - -DCMAKE_BUILD_TYPE=None
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtshadertools-everywhere-src-6.7.2.tar.xz
-        sha256: edfa34c0ac8c00fcaa949df1d8e7a77d89dadd6386e683ce6c3e3b117e2f7cc1
+        url: https://download.qt.io/archive/qt/6.8/6.8.0/submodules/qtshadertools-everywhere-src-6.8.0.tar.xz
+        sha256: 44692dc93482374bf3b39e96c881fa08275f0bf82958b68a7e3c796b76d4c4cb
         x-checker-data:
           type: anitya
           project-id: 7927
@@ -364,8 +364,8 @@ modules:
       - -DCMAKE_BUILD_TYPE=None
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtdeclarative-everywhere-src-6.7.2.tar.xz
-        sha256: 4c29cba1af8c42d425d8eb6e01bad24cb80f4b983d71eef566a0542dfdb9b999
+        url: https://download.qt.io/archive/qt/6.8/6.8.0/submodules/qtdeclarative-everywhere-src-6.8.0.tar.xz
+        sha256: 3b41a36b42e919a3aa0da1f71107591504200f41707bee2ad8e8d4f99b5644c2
         x-checker-data:
           type: anitya
           project-id: 7927
@@ -380,8 +380,8 @@ modules:
       - -DCMAKE_BUILD_TYPE=None
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtwayland-everywhere-src-6.7.2.tar.xz
-        sha256: a2a057e1dd644bd44abb9990fecc194b2e25c2e0f39e81aa9fee4c1e5e2a8a5b
+        url: https://download.qt.io/archive/qt/6.8/6.8.0/submodules/qtwayland-everywhere-src-6.8.0.tar.xz
+        sha256: 175758591638ebf1c6fbb66ac11c7fa0eb8d4ed52e9243cc59075d06a6a2060a
         x-checker-data:
           type: anitya
           project-id: 7927
@@ -397,8 +397,8 @@ modules:
       - -DCMAKE_BUILD_TYPE=None
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtimageformats-everywhere-src-6.7.2.tar.xz
-        sha256: e1a1d8785fae67d16ad0a443b01d5f32663a6b68d275f1806ebab257485ce5d6
+        url: https://download.qt.io/archive/qt/6.8/6.8.0/submodules/qtimageformats-everywhere-src-6.8.0.tar.xz
+        sha256: 595bf8557b91e1f8ebc726f1e09868a3c7e610ff5045068f2d4ea2428c49a5d4
         x-checker-data:
           type: anitya
           project-id: 7927
@@ -411,8 +411,8 @@ modules:
       - -DCMAKE_BUILD_TYPE=None
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.7/6.7.2/submodules/qtsvg-everywhere-src-6.7.2.tar.xz
-        sha256: fb0d1286a35be3583fee34aeb5843c94719e07193bdf1d4d8b0dc14009caef01
+        url: https://download.qt.io/archive/qt/6.8/6.8.0/submodules/qtsvg-everywhere-src-6.8.0.tar.xz
+        sha256: cf7a593d5e520f8177240610d9e55d5b75b0887fe5f385554ff64377f1646199
         x-checker-data:
           type: anitya
           project-id: 7927
@@ -426,7 +426,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/desktop-app/tg_owt.git
-        commit: 4a60ce1ab9fdb962004c6a959f682ace3db50cbd
+        commit: 8198c4d8b91e22d68eb5c7327fd408e3b6abcc79
         x-checker-data:
           type: json
           parent-id: materialgram-git-0
@@ -461,8 +461,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/kukuruzka165/materialgram.git
-        commit: 98c46abe6eb4c033b63a39fab4c932b94c38133b
-        tag: v5.5.4.1
+        commit: e65f2110a2a2265ee2e9dfd01ddebfc21b2b5b4d
+        tag: v5.7.0.1
         x-checker-data:
           type: json
           url: https://api.github.com/repos/kukuruzka165/materialgram/releases
