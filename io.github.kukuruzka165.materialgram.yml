@@ -248,10 +248,10 @@ modules:
     builddir: true
     config-opts:
       - -DCMAKE_BUILD_TYPE=None
-      - -DWITH_X265=OFF
-      - -DWITH_AOM=OFF
-      - -DWITH_RAV1E=OFF
-      - -DWITH_DAV1D=OFF
+      - -DCMAKE_COMPILE_WARNING_AS_ERROR=OFF
+      - -DCMAKE_DISABLE_FIND_PACKAGE_Doxygen=ON
+      - -DBUILD_TESTING=OFF
+      - -DWITH_FFMPEG_DECODER=ON
       - -DWITH_EXAMPLES=OFF
     sources:
       - type: archive
@@ -451,3 +451,6 @@ modules:
           tag-query: first | .tag_name
           timestamp-query: first | .published_at
           version-query: $tag | sub("^[vV]"; "")
+      - type: shell
+        commands:
+          - sed -i '/-Werror/d' Telegram/ThirdParty/dispatch/cmake/modules/DispatchCompilerWarnings.cmake
