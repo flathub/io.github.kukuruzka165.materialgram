@@ -80,8 +80,8 @@ modules:
         "Jinja2" --no-build-isolation
     sources:
       - type: file
-        url: https://files.pythonhosted.org/packages/bc/18/b9b81cab2b8f63e6e7f72e1ba2766a0454fcd563e7a77b8299cb917ba805/flit_core-3.11.0.tar.gz
-        sha256: 6ceeee3219e9d2ea282041f3e027c441597b450b33007cb81168e887b6113a8f
+        url: https://files.pythonhosted.org/packages/69/59/b6fc2188dfc7ea4f936cd12b49d707f66a1cb7a1d2c16172963534db741b/flit_core-3.12.0.tar.gz
+        sha256: 18f63100d6f94385c6ed57a72073443e1a71a4acb4339491615d0f16d6ff01b2
         x-checker-data:
           type: pypi
           name: flit-core
@@ -113,8 +113,8 @@ modules:
       - install -D systemd-detect-virt "$FLATPAK_DEST/bin"
     sources:
       - type: archive
-        url: https://github.com/systemd/systemd/archive/v257.4/systemd-257.4.tar.gz
-        sha256: 3e7955ecdb8ad317b2876a31ad749e4dd71d371f343de40d856d62c1eb2ffa2a
+        url: https://github.com/systemd/systemd/archive/v257.5/systemd-257.5.tar.gz
+        sha256: 4d65f9482608cf9f7823df42a6d7796f0e0dfcfb94301df75effff86d40da33e
         x-checker-data:
           type: json
           url: https://api.github.com/repos/systemd/systemd/releases/latest
@@ -154,8 +154,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/ada-url/ada.git
-        commit: 31edab7afa1be62cd8fec89b80ae370aee56d687
-        tag: v3.2.1
+        commit: 220788b8e0f9eaf3b25ab8fd88a187316fd7c609
+        tag: v3.2.2
         x-checker-data:
           type: json
           url: https://api.github.com/repos/ada-url/ada/releases/latest
@@ -173,8 +173,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/protocolbuffers/protobuf.git
-        commit: 0d815c5b74281f081c1ee4b431a4d5bbb1615c97
-        tag: v30.1
+        commit: 43e1626812c1b543e56a7bec59dc09eb18248bd2
+        tag: v30.2
         x-checker-data:
           type: json
           url: https://api.github.com/repos/protocolbuffers/protobuf/releases/latest
@@ -278,8 +278,8 @@ modules:
       - -DINPUT_openssl=linked
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.8/6.8.2/submodules/qtbase-everywhere-src-6.8.2.tar.xz
-        sha256: 012043ce6d411e6e8a91fdc4e05e6bedcfa10fcb1347d3c33908f7fdd10dfe05
+        url: https://download.qt.io/archive/qt/6.9/6.9.0/submodules/qtbase-everywhere-src-6.9.0.tar.xz
+        sha256: c1800c2ea835801af04a05d4a32321d79a93954ee3ae2172bbeacf13d1f0598c
         x-checker-data:
           type: anitya
           project-id: 7927
@@ -295,8 +295,8 @@ modules:
       - -DCMAKE_BUILD_TYPE=None
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.8/6.8.2/submodules/qtshadertools-everywhere-src-6.8.2.tar.xz
-        sha256: d1d5f90e8885fc70d63ac55a4ce4d9a2688562033a000bc4aff9320f5f551871
+        url: https://download.qt.io/archive/qt/6.9/6.9.0/submodules/qtshadertools-everywhere-src-6.9.0.tar.xz
+        sha256: 916c40281ac3dee23b163f6ca73fb5bdeee344838b9a922b6f36269642d6f4bb
         x-checker-data:
           type: anitya
           project-id: 7927
@@ -311,8 +311,8 @@ modules:
       - -DCMAKE_BUILD_TYPE=None
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.8/6.8.2/submodules/qtdeclarative-everywhere-src-6.8.2.tar.xz
-        sha256: 144d876adc8bb55909735143e678d1e24eadcd0a380a0186792d88b731346d56
+        url: https://download.qt.io/archive/qt/6.9/6.9.0/submodules/qtdeclarative-everywhere-src-6.9.0.tar.xz
+        sha256: a3175fa510847a136734f989e2bfea7f7bbb9dc9acc98b40b544d26f5ba20d3d
         x-checker-data:
           type: anitya
           project-id: 7927
@@ -327,8 +327,8 @@ modules:
       - -DCMAKE_BUILD_TYPE=None
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.8/6.8.2/submodules/qtwayland-everywhere-src-6.8.2.tar.xz
-        sha256: 5e46157908295f2bf924462d8c0855b0508ba338ced9e810891fefa295dc9647
+        url: https://download.qt.io/archive/qt/6.9/6.9.0/submodules/qtwayland-everywhere-src-6.9.0.tar.xz
+        sha256: 503416fcb04db503bd130e6a49c45e3e546f091e83406f774a0c703130c91805
         x-checker-data:
           type: anitya
           project-id: 7927
@@ -344,8 +344,8 @@ modules:
       - -DCMAKE_BUILD_TYPE=None
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.8/6.8.2/submodules/qtimageformats-everywhere-src-6.8.2.tar.xz
-        sha256: d2a1bbb84707b8a0aec29227b170be00f04383fbf2361943596d09e7e443c8e1
+        url: https://download.qt.io/archive/qt/6.9/6.9.0/submodules/qtimageformats-everywhere-src-6.9.0.tar.xz
+        sha256: 2047c6242a57bf97cf40079fa9f91752c137cd9ae84760faa9a2e5e8a440606f
         x-checker-data:
           type: anitya
           project-id: 7927
@@ -408,8 +408,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/kukuruzka165/materialgram.git
-        commit: 37497803d641e1ae76623a6a38276a6f6d3ac5ae
-        tag: v5.12.2.1
+        commit: f0bcf56aa08613b226c51c12ade531fc2e38dd98
+        tag: v5.13.1.1
         x-checker-data:
           type: json
           url: https://api.github.com/repos/kukuruzka165/materialgram/releases
