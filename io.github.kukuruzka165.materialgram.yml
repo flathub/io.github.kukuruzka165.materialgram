@@ -404,8 +404,9 @@ modules:
         commit: 51743dfd01dff6179e2d8f7095729caa4e2222e9
         x-checker-data:
           type: json
+          parent-id: telegram-desktop-git-0
           commit-data-url: >-
-            "https://github.com/kukuruzka165/materialgram/raw/\($parent.new.tag//$parent.current.tag)/snap/snapcraft.yaml"
+            "https://github.com/telegramdesktop/tdesktop/raw/\($parent.new.tag//$parent.current.tag)/snap/snapcraft.yaml"
           commit-query: >-
             .parts.tde2e."source-commit"
           version-data-url: >-
