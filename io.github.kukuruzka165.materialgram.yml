@@ -404,19 +404,17 @@ modules:
         commit: 51743dfd01dff6179e2d8f7095729caa4e2222e9
         x-checker-data:
           type: json
-          parent-id: telegram-desktop-git-0
-          commit-data-url: >-
-            "https://github.com/telegramdesktop/tdesktop/raw/\($parent.new.tag//$parent.current.tag)/snap/snapcraft.yaml"
-          commit-query: >-
-            .parts.tde2e."source-commit"
+          repo: kukuruzka165/materialgram
+          tag-pattern: '^tdlib-r[0-9a-f]+$'
+          version-template: '{tag}'
+          urls:
+            commit-data: >-
+              https://raw.githubusercontent.com/kukuruzka165/materialgram/{tag}/snap/snapcraft.yaml
+          commit-query: .parts.tde2e."source-commit"
           version-data-url: >-
-            "https://api.github.com/repos/tdlib/td/commits/\($commit)"
+            https://api.github.com/repos/tdlib/td/commits/\($commit)
           version-query: >-
-            "tdlib/td@\(.sha[0:7])"
-          timestamp-data-url: >-
-            "https://api.github.com/repos/tdlib/td/commits/\($commit)"
-          timestamp-query: >-
-            .commit.committer.date
+            tdlib/td@\(.sha[0:7])
     cleanup:
       - '*'
 
