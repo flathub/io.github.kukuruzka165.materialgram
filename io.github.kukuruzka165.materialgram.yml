@@ -3,7 +3,6 @@ runtime: org.freedesktop.Platform
 runtime-version: '24.08'
 sdk: org.freedesktop.Sdk
 command: materialgram
-rename-icon: materialgram
 finish-args:
   - --share=ipc
   - --share=network
@@ -17,6 +16,7 @@ finish-args:
   - --talk-name=com.canonical.indicator.application
   - --talk-name=org.ayatana.indicator.application
   - --filesystem=home:ro
+  - --talk-name=org.sigxcpu.Feedback
   - --unset-env=QT_PLUGIN_PATH
   - --env=PATH=/app/lib/webview/bin:/app/bin:/usr/bin
 sdk-extensions:
@@ -135,13 +135,13 @@ modules:
         linkflags="$LDFLAGS" -j $FLATPAK_BUILDER_N_JOBS install
     sources:
       - type: archive
-        url: https://boostorg.jfrog.io/artifactory/main/release/1.87.0/source/boost_1_87_0.tar.bz2
-        sha256: af57be25cb4c4f4b413ed692fe378affb4352ea50fbe294a11ef548f4d527d89
+        url: https://archives.boost.io/release/1.88.0/source/boost_1_88_0.tar.bz2
+        sha256: 46d9d2c06637b219270877c9e16155cbd015b6dc84349af064c088e9b5b12f7b
         x-checker-data:
           type: anitya
           project-id: 6845
           stable-only: true
-          url-template: https://boostorg.jfrog.io/artifactory/main/release/$version/source/boost_${major}_${minor}_${patch}.tar.bz2
+          url-template: https://archives.boost.io/release/$version/source/boost_${major}_${minor}_${patch}.tar.bz2
           url-query: '"https://github.com/strukturag/libheif/archive/\($tag)/libheif-\($version).tar.gz"'
 
   - name: ada
@@ -320,23 +320,6 @@ modules:
     cleanup:
       - /bin
 
-  - name: qtwayland
-    buildsystem: cmake-ninja
-    builddir: true
-    config-opts:
-      - -DCMAKE_BUILD_TYPE=None
-    sources:
-      - type: archive
-        url: https://download.qt.io/archive/qt/6.9/6.9.0/submodules/qtwayland-everywhere-src-6.9.0.tar.xz
-        sha256: 503416fcb04db503bd130e6a49c45e3e546f091e83406f774a0c703130c91805
-        x-checker-data:
-          type: anitya
-          project-id: 7927
-          url-template: https://download.qt.io/archive/qt/$major.$minor/$version/submodules/qtwayland-everywhere-src-$version.tar.xz
-      - qtwayland.json
-    cleanup:
-      - /bin
-
   - name: qtimageformats
     buildsystem: cmake-ninja
     builddir: true
@@ -365,6 +348,23 @@ modules:
           project-id: 7927
           url-template: https://download.qt.io/archive/qt/$major.$minor/$version/submodules/qtsvg-everywhere-src-$version.tar.xz
 
+  - name: qtwayland
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=None
+    sources:
+      - type: archive
+        url: https://download.qt.io/archive/qt/6.9/6.9.0/submodules/qtwayland-everywhere-src-6.9.0.tar.xz
+        sha256: 503416fcb04db503bd130e6a49c45e3e546f091e83406f774a0c703130c91805
+        x-checker-data:
+          type: anitya
+          project-id: 7927
+          url-template: https://download.qt.io/archive/qt/$major.$minor/$version/submodules/qtwayland-everywhere-src-$version.tar.xz
+      - qtwayland.json
+    cleanup:
+      - /bin
+
   - name: tg_owt
     buildsystem: cmake-ninja
     builddir: true
@@ -387,6 +387,34 @@ modules:
             "desktop-app/tg_owt@\(.sha[0:7])"
           timestamp-data-url: >-
             "https://api.github.com/repos/desktop-app/tg_owt/commits/\($commit)"
+          timestamp-query: >-
+            .commit.committer.date
+    cleanup:
+      - '*'
+
+  - name: tde2e
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=None
+      - -DTD_E2E_ONLY=ON
+    sources:
+      - type: git
+        url: https://github.com/tdlib/td.git
+        commit: 51743dfd01dff6179e2d8f7095729caa4e2222e9
+        x-checker-data:
+          type: json
+          parent-id: materialgram-git-0
+          commit-data-url: >-
+            "https://github.com/kukuruzka165/materialgram/raw/\($parent.new.tag//$parent.current.tag)/snap/snapcraft.yaml"
+          commit-query: >-
+            .parts.tde2e."source-commit"
+          version-data-url: >-
+            "https://api.github.com/repos/tdlib/td/commits/\($commit)"
+          version-query: >-
+            "tdlib/td@\(.sha[0:7])"
+          timestamp-data-url: >-
+            "https://api.github.com/repos/tdlib/td/commits/\($commit)"
           timestamp-query: >-
             .commit.committer.date
     cleanup:
