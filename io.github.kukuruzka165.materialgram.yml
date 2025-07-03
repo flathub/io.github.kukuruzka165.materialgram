@@ -228,8 +228,8 @@ modules:
       - -DWITH_EXAMPLES=OFF
     sources:
       - type: archive
-        url: https://github.com/strukturag/libheif/archive/v1.20.0/libheif-1.20.0.tar.gz
-        sha256: 4c1f3022b074721c7391edcb29869b2f148fa4f47426fad9548712dc1406720d
+        url: https://github.com/strukturag/libheif/archive/v1.20.1/libheif-1.20.1.tar.gz
+        sha256: 9d3d601ec7a55281217aaa6c773cf6645757b062bc7e9680b664bbd8e481112d
         x-checker-data:
           type: json
           url: https://api.github.com/repos/strukturag/libheif/releases/latest
@@ -396,8 +396,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/kukuruzka165/materialgram.git
-        commit: e82ad4ea3ca0be5f95e6f09a1e7f9bdccf3f9032
-        tag: v5.15.2.1
+        commit: af3d94e9d8dfa3a9c84f508fed95f4843ce1f29f
+        tag: v5.16.1.1
         x-checker-data:
           type: json
           url: https://api.github.com/repos/kukuruzka165/materialgram/releases
