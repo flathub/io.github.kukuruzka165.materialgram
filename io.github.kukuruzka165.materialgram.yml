@@ -60,8 +60,8 @@ modules:
           type: pypi
           name: flit-core
       - type: file
-        url: https://files.pythonhosted.org/packages/b2/97/5d42485e71dfc078108a86d6de8fa46db44a1a9295e89c5d6d4a06e23a62/markupsafe-3.0.2.tar.gz
-        sha256: ee55d3edf80167e48ea11a923c7386f4669df67d7994554387f84e7d8b0a2bf0
+        url: https://files.pythonhosted.org/packages/7e/99/7690b6d4034fffd95959cbe0c02de8deb3098cc577c67bb6a24fe5d7caa7/markupsafe-3.0.3.tar.gz
+        sha256: 722695808f4b6457b320fdc131280796bdceb04ab50fe1795cd540799ebe1698
         x-checker-data:
           type: pypi
           name: MarkupSafe
@@ -261,8 +261,8 @@ modules:
       - -DINPUT_openssl=linked
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.9/6.9.2/submodules/qtbase-everywhere-src-6.9.2.tar.xz
-        sha256: 44be9c9ecfe04129c4dea0a7e1b36ad476c9cc07c292016ac98e7b41514f2440
+        url: https://download.qt.io/archive/qt/6.10/6.10.0/submodules/qtbase-everywhere-src-6.10.0.tar.xz
+        sha256: ead4623bcb54a32257c5b3e3a5aec6d16ec96f4cda58d2e003f5a0c16f72046d
         x-checker-data:
           type: anitya
           project-id: 7927
@@ -276,8 +276,8 @@ modules:
     builddir: true
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.9/6.9.2/submodules/qtshadertools-everywhere-src-6.9.2.tar.xz
-        sha256: 17678af9d9543224bbb932bf18d4fc05e180b2b3a3216241e557631bd6bf1495
+        url: https://download.qt.io/archive/qt/6.10/6.10.0/submodules/qtshadertools-everywhere-src-6.10.0.tar.xz
+        sha256: 87ba478c3fd827862fc79f6d78d369dfec162c901b7f66ed988b3e1d6ffdfbf6
         x-checker-data:
           type: anitya
           project-id: 7927
@@ -290,8 +290,8 @@ modules:
     builddir: true
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.9/6.9.2/submodules/qtdeclarative-everywhere-src-6.9.2.tar.xz
-        sha256: 477f2d2c0bd98916107818725e6d498206e033dfb2859c52121e01a06ac42664
+        url: https://download.qt.io/archive/qt/6.10/6.10.0/submodules/qtdeclarative-everywhere-src-6.10.0.tar.xz
+        sha256: 6efd35520902395d865bc12e89f8442c3c228d0374f13af9a1888b844f56f6b0
         x-checker-data:
           type: anitya
           project-id: 7927
@@ -304,8 +304,8 @@ modules:
     builddir: true
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.9/6.9.2/submodules/qtimageformats-everywhere-src-6.9.2.tar.xz
-        sha256: 8a023f7e2f57dedc02e2ab10c975f7cb3cccac9b8f0823c12fd6824834549139
+        url: https://download.qt.io/archive/qt/6.10/6.10.0/submodules/qtimageformats-everywhere-src-6.10.0.tar.xz
+        sha256: 64450a52507c540de53616ed5e516df0e0905a99d3035ddfaa690f2b3f7c0cea
         x-checker-data:
           type: anitya
           project-id: 7927
@@ -318,8 +318,8 @@ modules:
     builddir: true
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.9/6.9.2/submodules/qtsvg-everywhere-src-6.9.2.tar.xz
-        sha256: d984cab8f26334aa1c15e5b8f0cd9f1b7c0c1289fe0b68c1c84ab469b75605a5
+        url: https://download.qt.io/archive/qt/6.10/6.10.0/submodules/qtsvg-everywhere-src-6.10.0.tar.xz
+        sha256: 5ed2c0e04d5e73ff75c2a2ed92db5dc1788ba70f704fc2b71bc21644beda2533
         x-checker-data:
           type: anitya
           project-id: 7927
@@ -332,8 +332,8 @@ modules:
     builddir: true
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.9/6.9.2/submodules/qtwayland-everywhere-src-6.9.2.tar.xz
-        sha256: cad79806565568f12f9983fed69219416abcee9d5deef4abdfcf94aa2eef7781
+        url: https://download.qt.io/archive/qt/6.10/6.10.0/submodules/qtwayland-everywhere-src-6.10.0.tar.xz
+        sha256: 603f2b0a259b24bd0fb14f880d7761b1d248118a42a6870cdbe8fdda4173761f
         x-checker-data:
           type: anitya
           project-id: 7927
@@ -348,7 +348,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/desktop-app/tg_owt.git
-        commit: 62321fd7128ab2650b459d4195781af8185e46b5
+        commit: 5c5c71258777d0196dbb3a09cc37d2f56ead28ab
         x-checker-data:
           type: json
           parent-id: materialgram-git-0
@@ -396,8 +396,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/kukuruzka165/materialgram.git
-        commit: c4ae26ef27b644f3ca6d1c7e2cd79553145dad6e
-        tag: v6.1.0.1
+        commit: d570cee36e6961a5472b5f6b286da732fcb417b9
+        tag: v6.2.2.1
         x-checker-data:
           type: json
           url: https://api.github.com/repos/kukuruzka165/materialgram/releases
