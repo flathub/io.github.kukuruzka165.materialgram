@@ -1,7 +1,7 @@
 id: io.github.kukuruzka165.materialgram
-runtime: org.freedesktop.Platform
-runtime-version: '24.08'
-sdk: org.freedesktop.Sdk
+runtime: org.gnome.Platform
+runtime-version: '48'
+sdk: org.gnome.Sdk
 command: materialgram
 finish-args:
   - --share=ipc
@@ -10,6 +10,7 @@ finish-args:
   - --socket=fallback-x11
   - --socket=pulseaudio
   - --device=all
+  - --talk-name=org.freedesktop.Notifications
   - --talk-name=org.gnome.Mutter.IdleMonitor
   - --talk-name=org.kde.StatusNotifierWatcher
   - --talk-name=com.canonical.AppMenu.Registrar
@@ -18,7 +19,6 @@ finish-args:
   - --filesystem=home:ro
   - --talk-name=org.sigxcpu.Feedback
   - --unset-env=QT_PLUGIN_PATH
-  - --env=PATH=/app/lib/webview/bin:/app/bin:/usr/bin
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.llvm20
 add-extensions:
@@ -28,15 +28,8 @@ add-extensions:
     version: '24.08'
     autodownload: true
     autodelete: false
-  org.telegram.desktop.webview:
-    directory: lib/webview
-    add-ld-path: lib
-    version: stable
-    autodownload: true
-    autodelete: true
 cleanup-commands:
   - mkdir -p ${FLATPAK_DEST}/lib/ffmpeg
-  - mkdir -p ${FLATPAK_DEST}/lib/webview
 build-options:
   append-path: /usr/lib/sdk/llvm20/bin
   append-ld-library-path: /usr/lib/sdk/llvm20/lib
@@ -44,7 +37,49 @@ build-options:
   env:
     CMAKE_BUILD_TYPE: None
     CMAKE_PREFIX_PATH: /app
+  arch:
+    aarch64:
+      cflags: -g1
+      cxxflags: -g1
 modules:
+  - name: pkg-config
+    buildsystem: simple
+    build-commands:
+      - install -d $FLATPAK_DEST/bin
+      - |
+        cat <<EOF > $FLATPAK_DEST/bin/pkg-config
+        #!/bin/sh
+        unset PKG_CONFIG_ALLOW_SYSTEM_LIBS
+        exec /usr/bin/pkg-config "\$@"
+        EOF
+      - chmod +x $FLATPAK_DEST/bin/pkg-config
+    cleanup:
+      - '*'
+
+  - name: implib
+    buildsystem: simple
+    build-commands:
+      - |
+        install -d $FLATPAK_DEST/lib
+        mkdir build
+        cd build
+        implib() {
+          LIBFILE=$(basename $1)
+          LIBNAME=$(basename $1 .so)
+          ../implib-gen.py -q $1
+          gcc $CFLAGS -c -o $LIBFILE.tramp.o $LIBFILE.tramp.S
+          gcc $CFLAGS -c -o $LIBFILE.init.o $LIBFILE.init.c
+          ar rcs $FLATPAK_DEST/lib/$LIBNAME.a $LIBFILE.tramp.o $LIBFILE.init.o
+        }
+        implib /usr/lib/$FLATPAK_ARCH-linux-gnu/libgtk-3.so
+        implib /usr/lib/$FLATPAK_ARCH-linux-gnu/libgdk-3.so
+    sources:
+      - type: git
+        url: https://github.com/yugr/Implib.so.git
+        commit: ecf7bb51a92a0fb16834c5b698570ab25f9f1d21
+    cleanup:
+      - '*'
+
   - name: jinja2
     buildsystem: simple
     build-commands:
@@ -79,7 +114,6 @@ modules:
     builddir: true
     config-opts:
       - --buildtype=plain
-      - -Drootprefix=/app
     make-args:
       - systemd-detect-virt
     no-make-install: true
@@ -87,20 +121,21 @@ modules:
       - install -d "$FLATPAK_DEST/bin"
       - install -D systemd-detect-virt "$FLATPAK_DEST/bin"
     sources:
-      - type: archive
-        url: https://github.com/systemd/systemd/archive/v258/systemd-258.tar.gz
-        sha256: 07a580cf21856f468f82b77b82973a926f42ccc696462459b53f8b88893dff8e
+      - type: git
+        url: https://github.com/systemd/systemd.git
+        commit: 781d9d0789379d1ea1f2ecefb804d41e9c8b6c38
+        tag: v258
         x-checker-data:
           type: json
           url: https://api.github.com/repos/systemd/systemd/releases/latest
           tag-query: .tag_name
           timestamp-query: .published_at
           version-query: $tag | sub("^[vV]"; "")
-          url-query: '"https://github.com/systemd/systemd/archive/\($tag)/systemd-\($version).tar.gz"'
       - type: shell
         commands:
-          - 'sed -i "/systemd-detect-virt/,/link_with/ s/link_with : \\[libshared\\]/link_with
-            : [libshared_static, libsystemd_static, libbasic]/" meson.build'
+          - >-
+            sed -i "s/'link_with' : libshared/'link_with' : [libshared_static, libsystemd_static,
+            libbasic_static]/" meson.build
 
   - name: boost
     buildsystem: simple
@@ -117,7 +152,6 @@ modules:
           project-id: 6845
           stable-only: true
           url-template: https://archives.boost.io/release/$version/source/boost_${major}_${minor}_${patch}.tar.bz2
-          url-query: '"https://github.com/strukturag/libheif/archive/\($tag)/libheif-\($version).tar.gz"'
     cleanup:
       - '*'
 
@@ -204,15 +238,15 @@ modules:
       - -DENABLE_SDL=OFF
     sources:
       - type: archive
-        url: https://github.com/strukturag/libde265/archive/v1.0.16/libde265-1.0.16.tar.gz
-        sha256: ed12c931759c1575848832f70db5071a001ac813db4e4f568ee08aef6e234d4e
+        url: https://github.com/strukturag/libde265/releases/download/v1.0.16/libde265-1.0.16.tar.gz
+        sha256: b92beb6b53c346db9a8fae968d686ab706240099cdd5aff87777362d668b0de7
         x-checker-data:
           type: json
           url: https://api.github.com/repos/strukturag/libde265/releases/latest
           tag-query: .tag_name
           timestamp-query: .published_at
           version-query: $tag | sub("^[vV]"; "")
-          url-query: '"https://github.com/strukturag/libde265/archive/\($tag)/libde265-\($version).tar.gz"'
+          url-query: '"https://github.com/strukturag/libde265/releases/download/\($tag)/libde265-\($version).tar.gz"'
     cleanup:
       - '*'
 
@@ -228,15 +262,15 @@ modules:
       - -DWITH_EXAMPLES=OFF
     sources:
       - type: archive
-        url: https://github.com/strukturag/libheif/archive/v1.20.2/libheif-1.20.2.tar.gz
-        sha256: b70340395d84184bb8dfc833dd51c95ae049435f7ff9abc7b505a08b5ee2bd2a
+        url: https://github.com/strukturag/libheif/releases/download/v1.20.2/libheif-1.20.2.tar.gz
+        sha256: 68ac9084243004e0ef3633f184eeae85d615fe7e4444373a0a21cebccae9d12a
         x-checker-data:
           type: json
           url: https://api.github.com/repos/strukturag/libheif/releases/latest
           tag-query: .tag_name
           timestamp-query: .published_at
           version-query: $tag | sub("^[vV]"; "")
-          url-query: '"https://github.com/strukturag/libheif/archive/\($tag)/libheif-\($version).tar.gz"'
+          url-query: '"https://github.com/strukturag/libheif/releases/download/\($tag)/libheif-\($version).tar.gz"'
     cleanup:
       - '*'
 
@@ -246,98 +280,40 @@ modules:
       - --disable-examples
       - --disable-doc
     sources:
-      - type: git
-        url: https://gitlab.xiph.org/xiph/rnnoise.git
-        commit: 7f449bf8bd3b933891d12c30112268c4090e4d59
+      - type: archive
+        url: https://github.com/xiph/rnnoise/releases/download/v0.2/rnnoise-0.2.tar.gz
+        sha256: 90fce4b00b9ff24c08dbfe31b82ffd43bae383d85c5535676d28b0a2b11c0d37
+        x-checker-data:
+          type: json
+          url: https://api.github.com/repos/xiph/rnnoise/releases/latest
+          tag-query: .tag_name
+          timestamp-query: .published_at
+          version-query: $tag | sub("^[vV]"; "")
+          url-query: '"https://github.com/xiph/rnnoise/releases/download/\($tag)/rnnoise-\($version).tar.gz"'
+      - type: shell
+        commands:
+          - sed -i 's/os_support.h/common.h/g;s/OPUS_CLEAR/RNN_CLEAR/g' src/vec{,_neon}.h
     cleanup:
       - '*'
 
-  - name: qtbase
+  - name: qt
     buildsystem: cmake-ninja
     builddir: true
     config-opts:
       - -DBUILD_SHARED_LIBS=OFF
+      - -DQT_BUILD_SUBMODULES=qtbase;qtdeclarative;qtimageformats;qtshadertools;qtsvg;qtwayland
       - -DQT_QPA_PLATFORMS=wayland;xcb
+      - -DFEATURE_copy_file_range=OFF
       - -DINPUT_openssl=linked
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.10/6.10.0/submodules/qtbase-everywhere-src-6.10.0.tar.xz
-        sha256: ead4623bcb54a32257c5b3e3a5aec6d16ec96f4cda58d2e003f5a0c16f72046d
+        url: https://download.qt.io/archive/qt/6.10/6.10.0/single/qt-everywhere-src-6.10.0.tar.xz
+        sha256: 81895fb038a9c3d6c6f698d7611339a189eb45c3d91746c7789b0b77a5981aa3
         x-checker-data:
           type: anitya
           project-id: 7927
-          url-template: https://download.qt.io/archive/qt/$major.$minor/$version/submodules/qtbase-everywhere-src-$version.tar.xz
+          url-template: https://download.qt.io/archive/qt/$major.$minor/$version/single/qt-everywhere-src-$version.tar.xz
       - qtbase.json
-    cleanup:
-      - '*'
-
-  - name: qtshadertools
-    buildsystem: cmake-ninja
-    builddir: true
-    sources:
-      - type: archive
-        url: https://download.qt.io/archive/qt/6.10/6.10.0/submodules/qtshadertools-everywhere-src-6.10.0.tar.xz
-        sha256: 87ba478c3fd827862fc79f6d78d369dfec162c901b7f66ed988b3e1d6ffdfbf6
-        x-checker-data:
-          type: anitya
-          project-id: 7927
-          url-template: https://download.qt.io/archive/qt/$major.$minor/$version/submodules/qtshadertools-everywhere-src-$version.tar.xz
-    cleanup:
-      - '*'
-
-  - name: qtdeclarative
-    buildsystem: cmake-ninja
-    builddir: true
-    sources:
-      - type: archive
-        url: https://download.qt.io/archive/qt/6.10/6.10.0/submodules/qtdeclarative-everywhere-src-6.10.0.tar.xz
-        sha256: 6efd35520902395d865bc12e89f8442c3c228d0374f13af9a1888b844f56f6b0
-        x-checker-data:
-          type: anitya
-          project-id: 7927
-          url-template: https://download.qt.io/archive/qt/$major.$minor/$version/submodules/qtdeclarative-everywhere-src-$version.tar.xz
-    cleanup:
-      - '*'
-
-  - name: qtimageformats
-    buildsystem: cmake-ninja
-    builddir: true
-    sources:
-      - type: archive
-        url: https://download.qt.io/archive/qt/6.10/6.10.0/submodules/qtimageformats-everywhere-src-6.10.0.tar.xz
-        sha256: 64450a52507c540de53616ed5e516df0e0905a99d3035ddfaa690f2b3f7c0cea
-        x-checker-data:
-          type: anitya
-          project-id: 7927
-          url-template: https://download.qt.io/archive/qt/$major.$minor/$version/submodules/qtimageformats-everywhere-src-$version.tar.xz
-    cleanup:
-      - '*'
-
-  - name: qtsvg
-    buildsystem: cmake-ninja
-    builddir: true
-    sources:
-      - type: archive
-        url: https://download.qt.io/archive/qt/6.10/6.10.0/submodules/qtsvg-everywhere-src-6.10.0.tar.xz
-        sha256: 5ed2c0e04d5e73ff75c2a2ed92db5dc1788ba70f704fc2b71bc21644beda2533
-        x-checker-data:
-          type: anitya
-          project-id: 7927
-          url-template: https://download.qt.io/archive/qt/$major.$minor/$version/submodules/qtsvg-everywhere-src-$version.tar.xz
-    cleanup:
-      - '*'
-
-  - name: qtwayland
-    buildsystem: cmake-ninja
-    builddir: true
-    sources:
-      - type: archive
-        url: https://download.qt.io/archive/qt/6.10/6.10.0/submodules/qtwayland-everywhere-src-6.10.0.tar.xz
-        sha256: 603f2b0a259b24bd0fb14f880d7761b1d248118a42a6870cdbe8fdda4173761f
-        x-checker-data:
-          type: anitya
-          project-id: 7927
-          url-template: https://download.qt.io/archive/qt/$major.$minor/$version/submodules/qtwayland-everywhere-src-$version.tar.xz
       - qtwayland.json
     cleanup:
       - '*'
@@ -385,14 +361,9 @@ modules:
   - name: materialgram
     buildsystem: cmake-ninja
     builddir: true
-    build-options:
-      arch:
-        aarch64:
-          cflags: -g1
-          cxxflags: -g1
     config-opts:
-      - -DTDESKTOP_API_ID=611335
-      - -DTDESKTOP_API_HASH=d524b414d21f4d37f08684c1df41ac9c
+      - -DTDESKTOP_API_ID=26417228
+      - -DTDESKTOP_API_HASH=bf44847efaa9fbb46495e3c3ca9f12f4
     sources:
       - type: git
         url: https://github.com/kukuruzka165/materialgram.git
