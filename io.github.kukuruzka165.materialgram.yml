@@ -123,8 +123,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/systemd/systemd.git
-        commit: 15bd1496c9b59c1ec8ee05e78c65eeb3f148c898
-        tag: v258.2
+        commit: 56a85121cd3502e824ed368a6b06dda924932bcf
+        tag: v258.3
         x-checker-data:
           type: json
           url: https://api.github.com/repos/systemd/systemd/releases/latest
@@ -145,8 +145,8 @@ modules:
         linkflags="$LDFLAGS" -j $FLATPAK_BUILDER_N_JOBS install
     sources:
       - type: archive
-        url: https://archives.boost.io/release/1.89.0/source/boost_1_89_0.tar.bz2
-        sha256: 85a33fa22621b4f314f8e85e1a5e2a9363d22e4f4992925d4bb3bc631b5a0c7a
+        url: https://archives.boost.io/release/1.90.0/source/boost_1_90_0.tar.bz2
+        sha256: 49551aff3b22cbc5c5a9ed3dbc92f0e23ea50a0f7325b0d198b705e8ee3fc305
         x-checker-data:
           type: anitya
           project-id: 6845
@@ -183,8 +183,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/protocolbuffers/protobuf.git
-        commit: a8d85ffbc7158660b4247f732371d1b07780510e
-        tag: v33.1
+        commit: 7ccf2060af4cd13c44a8659d0999be6c7a98fcc1
+        tag: v33.2
         x-checker-data:
           type: json
           url: https://api.github.com/repos/protocolbuffers/protobuf/releases/latest
@@ -307,8 +307,8 @@ modules:
       - -DINPUT_openssl=linked
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.10/6.10.0/single/qt-everywhere-src-6.10.0.tar.xz
-        sha256: 81895fb038a9c3d6c6f698d7611339a189eb45c3d91746c7789b0b77a5981aa3
+        url: https://download.qt.io/archive/qt/6.10/6.10.1/single/qt-everywhere-src-6.10.1.tar.xz
+        sha256: 0ed08b079719394303cd2054b66b2dc0c5895ceeb88fb6131c18991c980bf00f
         x-checker-data:
           type: anitya
           project-id: 7927
