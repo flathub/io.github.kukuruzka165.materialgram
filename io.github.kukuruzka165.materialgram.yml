@@ -134,8 +134,8 @@ modules:
         linkflags="$LDFLAGS" -j $FLATPAK_BUILDER_N_JOBS install
     sources:
       - type: archive
-        url: https://archives.boost.io/release/1.90.0/source/boost_1_90_0.tar.bz2
-        sha256: 49551aff3b22cbc5c5a9ed3dbc92f0e23ea50a0f7325b0d198b705e8ee3fc305
+        url: https://archives.boost.io/release/1.91.0/source/boost_1_91_0.tar.bz2
+        sha256: de5e6b0e4913395c6bdfa90537febd9028ea4c0735d2cdb0cd9b45d5f51264f5
         x-checker-data:
           type: anitya
           project-id: 6845
@@ -298,7 +298,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/desktop-app/tg_owt.git
-        commit: 5c5c71258777d0196dbb3a09cc37d2f56ead28ab
+        commit: 26068e29bfa8d74a9dc9c8f7f94172fafbc262b8
         x-checker-data:
           type: json
           parent-id: materialgram-git-0
@@ -338,8 +338,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/kukuruzka165/materialgram.git
-        commit: b3acd00f26a900fed2809f8bd9995a24e5ca7ff2
-        tag: v6.4.0.1
+        commit: 196856dcccacff76abd6f9c00a3f5bf017d1a972
+        tag: v6.7.7.1
         x-checker-data:
           type: json
           url: https://api.github.com/repos/kukuruzka165/materialgram/releases
