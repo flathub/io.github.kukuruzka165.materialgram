@@ -1,6 +1,6 @@
 id: io.github.kukuruzka165.materialgram
 runtime: org.gnome.Platform
-runtime-version: '49'
+runtime-version: '50'
 sdk: org.gnome.Sdk
 command: materialgram
 finish-args:
@@ -20,14 +20,14 @@ finish-args:
   - --talk-name=org.sigxcpu.Feedback
   - --unset-env=QT_PLUGIN_PATH
 sdk-extensions:
-  - org.freedesktop.Sdk.Extension.llvm21
+  - org.freedesktop.Sdk.Extension.llvm22
 build-options:
-  append-path: /usr/lib/sdk/llvm21/bin
-  append-ld-library-path: /usr/lib/sdk/llvm21/lib
+  append-path: /usr/lib/sdk/llvm22/bin
+  append-ld-library-path: /usr/lib/sdk/llvm22/lib
   cflags: -g1
   cxxflags: -g1
-  ldflags: -Wl,--push-state,--no-as-needed,-lhwy,--pop-state
   env:
+    CCACHE_COMPILERCHECK: '%compiler% -v'
     CMAKE_BUILD_TYPE: None
     CMAKE_PREFIX_PATH: /app
 modules:
@@ -107,13 +107,12 @@ modules:
       - systemd-detect-virt
     no-make-install: true
     post-install:
-      - install -d "$FLATPAK_DEST/bin"
-      - install -D systemd-detect-virt "$FLATPAK_DEST/bin"
+      - install -Dt "$FLATPAK_DEST/bin" systemd-detect-virt
     sources:
       - type: git
         url: https://github.com/systemd/systemd.git
-        commit: c0a5a2516d28601fb3afc1a77d7b42fcfe38fced
-        tag: v260.1
+        commit: 4925d9f07fc697efccd98a93046ff535b8832445
+        tag: v261.2
         x-checker-data:
           type: json
           url: https://api.github.com/repos/systemd/systemd/releases/latest
@@ -130,8 +129,8 @@ modules:
     buildsystem: simple
     build-commands:
       - ./bootstrap.sh --prefix=${FLATPAK_DEST} --with-libraries=regex
-      - ./b2 variant=release link=static runtime-link=shared cxxflags="$CXXFLAGS"
-        linkflags="$LDFLAGS" -j $FLATPAK_BUILDER_N_JOBS install
+      - ./b2 release link=static cflags="$CFLAGS" cxxflags="$CXXFLAGS" linkflags="$LDFLAGS"
+        -j$FLATPAK_BUILDER_N_JOBS install
     sources:
       - type: archive
         url: https://archives.boost.io/release/1.91.0/source/boost_1_91_0.tar.bz2
@@ -172,8 +171,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/protocolbuffers/protobuf.git
-        commit: 4b0c3aacf0657fbf38253b38918d3358dd4319ec
-        tag: v34.1
+        commit: 35cd01f9fe9afbeea38cc7b979a3b6bfcde82c03
+        tag: v35.1
         x-checker-data:
           type: json
           url: https://api.github.com/repos/protocolbuffers/protobuf/releases/latest
@@ -183,47 +182,22 @@ modules:
     cleanup:
       - '*'
 
-  - name: jpegli
+  - name: mozjpeg
     buildsystem: cmake-ninja
     builddir: true
-    no-make-install: true
     config-opts:
-      - -DBUILD_TESTING=OFF
-      - -DJPEGXL_ENABLE_DEVTOOLS=OFF
-      - -DJPEGXL_ENABLE_TOOLS=OFF
-      - -DJPEGXL_INSTALL_JPEGLI_LIBJPEG=ON
-      - -DJPEGXL_ENABLE_DOXYGEN=OFF
-      - -DJPEGXL_ENABLE_MANPAGES=OFF
-      - -DJPEGXL_ENABLE_BENCHMARK=OFF
-      - -DJPEGXL_ENABLE_EXAMPLES=OFF
-      - -DJPEGXL_ENABLE_JNI=OFF
-      - -DJPEGXL_ENABLE_SJPEG=OFF
-      - -DJPEGXL_ENABLE_OPENEXR=OFF
-      - -DJPEGXL_ENABLE_SKCMS=OFF
-      - -DJPEGXL_FORCE_SYSTEM_BROTLI=ON
-      - -DJPEGXL_FORCE_SYSTEM_LCMS2=ON
-      - -DJPEGXL_FORCE_SYSTEM_HWY=ON
-    post-install:
-      - cp "$FLATPAK_BUILDER_BUILDDIR"/_flatpak_build/lib/libjpegli-static.a "$FLATPAK_DEST"/lib/libjpeg.a
-      - ar rcs "$FLATPAK_DEST"/lib/libjpeg.a "$FLATPAK_BUILDER_BUILDDIR"/_flatpak_build/lib/CMakeFiles/jpegli-libjpeg-obj.dir/jpegli/libjpeg_wrapper.cc.o
+      - -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+      - -DCMAKE_INSTALL_DEFAULT_LIBDIR=lib
+      - -DENABLE_SHARED=OFF
+      - -DPNG_SUPPORTED=OFF
     sources:
       - type: git
-        url: https://github.com/libjxl/libjxl.git
-        commit: 332feb17d17311c748445f7ee75c4fb55cc38530
-        tag: v0.11.2
+        url: https://github.com/mozilla/mozjpeg.git
+        commit: 6c9f0897afa1c2738d7222a0a9ab49e8b536a267
+        tag: v4.1.5
         x-checker-data:
-          type: json
-          url: https://api.github.com/repos/libjxl/libjxl/releases/latest
-          tag-query: .tag_name
-          timestamp-query: .published_at
-          version-query: $tag | sub("^[vV]"; "")
-      - type: file
-        url: https://github.com/libjxl/libjxl/commit/ee3955b1553bcc10304d45b85dfef9afa9349d72.patch
-        sha256: 5f8e3aa4fec3812ba17bbbf387a8781785a802642c31b1485d6758959d43f334
-      - type: shell
-        commands:
-          - sed -i 's/offset + t/offset + i/' ee3955b1553bcc10304d45b85dfef9afa9349d72.patch
-          - patch -p1 -i ee3955b1553bcc10304d45b85dfef9afa9349d72.patch
+          type: git
+          tag-pattern: ^v([\\d.]+)$
     cleanup:
       - '*'
 
@@ -244,6 +218,25 @@ modules:
           tag-query: .tag_name
           timestamp-query: .published_at
           version-query: $tag | sub("^[vV]"; "")
+    cleanup:
+      - '*'
+
+  - name: minizip
+    subdir: contrib/minizip
+    config-opts:
+      - --disable-shared
+    sources:
+      - type: git
+        url: https://github.com/madler/zlib.git
+        commit: e3dc0a85b7032e98380dec011bc8f2c2ee0d8fca
+        x-checker-data:
+          type: git
+          tag-pattern: ^v([\\d.]+)$
+          versions:
+            '>': 1.3.2
+      - type: shell
+        commands:
+          - cd contrib/minizip && autoreconf -fi
     cleanup:
       - '*'
 
@@ -281,14 +274,50 @@ modules:
       - -DINPUT_openssl=linked
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.11/6.11.0/single/qt-everywhere-src-6.11.0.tar.xz
-        sha256: acf3b3db04c9e5d0820e8324b097320388954c297cee83d2bd698789234f68a4
+        url: https://download.qt.io/archive/qt/6.11/6.11.1/single/qt-everywhere-src-6.11.1.tar.xz
+        sha256: 252acef8c5ae68074d91cadba2ee4a83465051bbb970dd26e8f0daa0f3904e03
         x-checker-data:
-          type: anitya
-          project-id: 7927
-          url-template: https://download.qt.io/archive/qt/$major.$minor/$version/single/qt-everywhere-src-$version.tar.xz
-      - qtbase.json
-      - qtwayland.json
+          type: json
+          parent-id: materialgram-git-0
+          tag-data-url: >-
+            "https://github.com/kukuruzka165/materialgram/raw/\($parent.new.tag//$parent.current.tag)/snap/snapcraft.yaml"
+          tag-query: >-
+            .parts.qt."source-tag"
+          version-query: >-
+            $tag | sub("^[vV]"; "")
+          timestamp-data-url: >-
+            "https://api.github.com/repos/qt/qt5/commits/\($tag)"
+          timestamp-query: >-
+            .commit.committer.date
+          url-query: >-
+            $version | split(".") as $v |
+            "https://download.qt.io/archive/qt/\($v[0]).\($v[1])/\($version)/single/qt-everywhere-src-\($version).tar.xz"
+      - type: git
+        url: https://github.com/desktop-app/patches.git
+        commit: 701cfb4b3d6612188d168f198c842114fd64726f
+        dest: patches
+        x-checker-data:
+          type: json
+          parent-id: materialgram-git-0
+          commit-data-url: >-
+            "https://github.com/kukuruzka165/materialgram/raw/\($parent.new.tag//$parent.current.tag)/snap/snapcraft.yaml"
+          commit-query: >-
+            .parts.patches."source-commit"
+          version-data-url: >-
+            "https://api.github.com/repos/desktop-app/patches/commits/\($commit)"
+          version-query: >-
+            "desktop-app/patches@\(.sha[0:7])"
+          timestamp-data-url: >-
+            "https://api.github.com/repos/desktop-app/patches/commits/\($commit)"
+          timestamp-query: >-
+            .commit.committer.date
+      - type: shell
+        commands:
+          - |
+            set -euo pipefail
+            QT="$(grep 'set(QT_REPO_MODULE_VERSION' qtbase/.cmake.conf | sed -r 's/.*"(.*)".*/\1/')"
+            find $PWD/patches/qtbase_${QT} -type f -print0 | sort -z | xargs -r0 git -C qtbase apply
+            find $PWD/patches/qtwayland_${QT} -type f -print0 | sort -z | xargs -r0 git -C qtwayland apply
     cleanup:
       - '*'
 
@@ -332,20 +361,24 @@ modules:
   - name: materialgram
     buildsystem: cmake-ninja
     builddir: true
+    build-options:
+      cflags: -fpch-preprocess
+      cxxflags: -fpch-preprocess
+      env:
+        CCACHE_SLOPPINESS: pch_defines,time_macros
     config-opts:
       - -DTDESKTOP_API_ID=26417228
       - -DTDESKTOP_API_HASH=bf44847efaa9fbb46495e3c3ca9f12f4
     sources:
       - type: git
         url: https://github.com/kukuruzka165/materialgram.git
-        commit: 196856dcccacff76abd6f9c00a3f5bf017d1a972
-        tag: v6.7.7.1
+        commit: bccbc4336b5dbff70f16c5fc5ad1cf1d27972c72
+        tag: v7.0.5.1
         x-checker-data:
           type: json
           url: https://api.github.com/repos/kukuruzka165/materialgram/releases
           tag-query: first | .tag_name
           timestamp-query: first | .published_at
           version-query: $tag | sub("^[vV]"; "")
-      - type: shell
-        commands:
-          - sed -i '/-Werror/d' Telegram/ThirdParty/dispatch/cmake/modules/DispatchCompilerWarnings.cmake
+    cleanup:
+      - /share/icons/hicolor/512x512@2
