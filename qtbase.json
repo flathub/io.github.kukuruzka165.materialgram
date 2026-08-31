@@ -45,6 +45,9 @@
         "desktop-app-patches/qtbase_6.11.1/0039-fix-backing-store-rhi-upload-dirty-rects.patch",
         "desktop-app-patches/qtbase_6.11.1/0040-macos-cursor-in-non-key-windows.patch",
         "desktop-app-patches/qtbase_6.11.1/0041-macos-widget-updates-via-display-link.patch",
-        "desktop-app-patches/qtbase_6.11.1/0042-backport-metal-monitor-plug-fix.patch"
+        "desktop-app-patches/qtbase_6.11.1/0042-backport-metal-monitor-plug-fix.patch",
+        "desktop-app-patches/qtbase_6.11.1/0043-guard-windows-deleted-on-screen-change.patch",
+        "desktop-app-patches/qtbase_6.11.1/0044-guard-window-destroyed-in-cocoa-setvisible.patch",
+        "desktop-app-patches/qtbase_6.11.1/0045-guard-window-geometry-across-screen-change.patch"
     ]
 }
