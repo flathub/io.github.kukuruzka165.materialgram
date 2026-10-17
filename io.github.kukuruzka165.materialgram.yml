@@ -1,6 +1,6 @@
 id: io.github.kukuruzka165.materialgram
 runtime: org.gnome.Platform
-runtime-version: '50'
+runtime-version: '51'
 sdk: org.gnome.Sdk
 command: materialgram
 finish-args:
@@ -10,6 +10,7 @@ finish-args:
   - --socket=fallback-x11
   - --socket=pulseaudio
   - --device=all
+  - --system-talk-name=org.bluez
   - --talk-name=org.freedesktop.Notifications
   - --talk-name=org.gnome.Mutter.IdleMonitor
   - --talk-name=org.kde.StatusNotifierWatcher
@@ -20,16 +21,19 @@ finish-args:
   - --talk-name=org.sigxcpu.Feedback
   - --unset-env=QT_PLUGIN_PATH
 sdk-extensions:
-  - org.freedesktop.Sdk.Extension.llvm22
+  - org.freedesktop.Sdk.Extension.rust-stable
 build-options:
-  append-path: /usr/lib/sdk/llvm22/bin
-  append-ld-library-path: /usr/lib/sdk/llvm22/lib
+  append-path: /usr/lib/sdk/rust-stable/bin
   cflags: -g1
   cxxflags: -g1
   env:
     CCACHE_COMPILERCHECK: '%compiler% -v'
     CMAKE_BUILD_TYPE: None
     CMAKE_PREFIX_PATH: /app
+    CARGO_NET_OFFLINE: 'true'
+    CARGO_PROFILE_RELEASE_OPT_LEVEL: '3'
+    CARGO_PROFILE_RELEASE_LTO: off
+    CARGO_PROFILE_RELEASE_PANIC: unwind
 modules:
   - name: pkg-config
     buildsystem: simple
@@ -84,8 +88,8 @@ modules:
           type: pypi
           name: flit-core
       - type: file
-        url: https://files.pythonhosted.org/packages/7e/99/7690b6d4034fffd95959cbe0c02de8deb3098cc577c67bb6a24fe5d7caa7/markupsafe-3.0.3.tar.gz
-        sha256: 722695808f4b6457b320fdc131280796bdceb04ab50fe1795cd540799ebe1698
+        url: https://files.pythonhosted.org/packages/38/9b/e422a865e1d5d57d0e509b4e0bf1c1a70a7f6382c29a5aa428df994c8bc8/markupsafe-3.0.4.tar.gz
+        sha256: 2e9ad7dd851bf45fab9f75cbff4cb493fee9979e8d8c7c9c3ee119022518edd6
         x-checker-data:
           type: pypi
           name: MarkupSafe
@@ -111,8 +115,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/systemd/systemd.git
-        commit: 3255daee1572366b74fe92f002a3d60ecbb27103
-        tag: v261.3
+        commit: 73612ea502d53baf9b0df4336cfc296a7ee0d524
+        tag: v262.1
         x-checker-data:
           type: json
           url: https://api.github.com/repos/systemd/systemd/releases/latest
@@ -157,25 +161,6 @@ modules:
         x-checker-data:
           type: json
           url: https://api.github.com/repos/ada-url/ada/releases/latest
-          tag-query: .tag_name
-          timestamp-query: .published_at
-          version-query: $tag | sub("^[vV]"; "")
-    cleanup:
-      - '*'
-
-  - name: protobuf
-    buildsystem: cmake-ninja
-    builddir: true
-    config-opts:
-      - -Dprotobuf_BUILD_TESTS=OFF
-    sources:
-      - type: git
-        url: https://github.com/protocolbuffers/protobuf.git
-        commit: f377bfefc5e2cfab68b816903c25b23e091c439d
-        tag: v36.1
-        x-checker-data:
-          type: json
-          url: https://api.github.com/repos/protocolbuffers/protobuf/releases/latest
           tag-query: .tag_name
           timestamp-query: .published_at
           version-query: $tag | sub("^[vV]"; "")
@@ -265,6 +250,8 @@ modules:
   - name: qt
     buildsystem: cmake-ninja
     builddir: true
+    build-options:
+      strip: true
     config-opts:
       - -DBUILD_SHARED_LIBS=OFF
       - -DBUILD_WITH_PCH=OFF
@@ -274,11 +261,11 @@ modules:
       - -DINPUT_openssl=linked
     sources:
       - type: archive
-        url: https://download.qt.io/archive/qt/6.11/6.11.1/single/qt-everywhere-src-6.11.1.tar.xz
-        sha256: 252acef8c5ae68074d91cadba2ee4a83465051bbb970dd26e8f0daa0f3904e03
+        url: https://download.qt.io/archive/qt/6.11/6.11.2/single/qt-everywhere-src-6.11.2.tar.xz
+        sha256: 6dcfbca271d76a6502741a2c0dc6fc98ef7dd0b7b4cfd0abcebb285a86a26f33
       - type: git
         url: https://github.com/desktop-app/patches.git
-        commit: 701cfb4b3d6612188d168f198c842114fd64726f
+        commit: aec474953ff7ee9b6e4cd9b8658288ea86d124f3
         dest: patches
       - type: shell
         commands:
@@ -296,7 +283,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/desktop-app/tg_owt.git
-        commit: 26068e29bfa8d74a9dc9c8f7f94172fafbc262b8
+        commit: d1cf250ea73de26c4c1f0a3c8173eb2648efbb04
         x-checker-data:
           type: json
           parent-id: materialgram-git-0
@@ -327,6 +314,53 @@ modules:
     cleanup:
       - '*'
 
+  - name: tdesktop_rust
+    buildsystem: simple
+    build-options:
+      env:
+        CARGO_HOME: /run/build/tdesktop_rust/cargo
+    build-commands:
+      - |
+        set -euo pipefail
+        cargo new --lib --vcs none tdesktop_rust
+        cd tdesktop_rust
+        printf 'pub use ::tlottie;\npub use ::wallet_engine;\n' > src/lib.rs
+        cargo add --path ../tlottie --features c-api
+        cargo add --path ../wallet-engine
+        cargo rustc --lib --release \
+          --crate-type staticlib --crate-type cdylib \
+          -- --print native-static-libs
+        mkdir -p $FLATPAK_DEST/lib $FLATPAK_DEST/include/tlottie $FLATPAK_DEST/include/wallet_engine
+        objcopy --strip-debug target/release/libtdesktop_rust.a $FLATPAK_DEST/lib/libtdesktop_rust.a
+        cp ../tlottie/include/tlottie.h $FLATPAK_DEST/include/tlottie/tlottie.h
+        cargo run --locked --manifest-path ../wallet-engine/bindgen/cpp/bindgen/Cargo.toml -- \
+          --library --out-dir $FLATPAK_DEST/include/wallet_engine \
+          target/release/libtdesktop_rust.so
+    sources:
+      - type: git
+        dest: tlottie
+        url: https://github.com/dkaraush/tlottie.git
+        commit: 92df98dc209bc39b1e567ec74a8c86a0af5239de
+        x-cargo-lock:
+          - Cargo.lock
+      - type: git
+        dest: wallet-engine
+        url: https://github.com/i582/wallet-engine.git
+        commit: e59e0d89d7ee90c388bf36e3334c5b276f396697
+        x-cargo-lock:
+          - Cargo.lock
+          - bindgen/cpp/Cargo.lock
+      - type: git
+        url: https://github.com/desktop-app/patches.git
+        commit: aec474953ff7ee9b6e4cd9b8658288ea86d124f3
+        dest: patches
+      - type: shell
+        commands:
+          - git -C wallet-engine apply $PWD/patches/wallet-engine.patch
+      - tdesktop_rust.yml
+    cleanup:
+      - '*'
+
   - name: materialgram
     buildsystem: cmake-ninja
     builddir: true
@@ -338,11 +372,13 @@ modules:
     config-opts:
       - -DTDESKTOP_API_ID=26417228
       - -DTDESKTOP_API_HASH=bf44847efaa9fbb46495e3c3ca9f12f4
+    post-install:
+      - ccache --evict-older-than 1d
     sources:
       - type: git
         url: https://github.com/kukuruzka165/materialgram.git
-        commit: bccbc4336b5dbff70f16c5fc5ad1cf1d27972c72
-        tag: v7.0.5.1
+        commit: bb524b361d206c9cb2e8b25c4770e003775363e4
+        tag: v7.3.1.1
         x-checker-data:
           type: json
           url: https://api.github.com/repos/kukuruzka165/materialgram/releases
