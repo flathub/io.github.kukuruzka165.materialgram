@@ -283,7 +283,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/desktop-app/tg_owt.git
-        commit: d1cf250ea73de26c4c1f0a3c8173eb2648efbb04
+        commit: 07fb35bc33b3e79125a1beab7690e830f183f5d8
         x-checker-data:
           type: json
           parent-id: materialgram-git-0
